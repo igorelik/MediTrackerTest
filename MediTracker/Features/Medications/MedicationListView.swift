@@ -6,10 +6,14 @@ struct MedicationListView: View {
 
     @Query(sort: \MedicationEntity.createdAt, order: .reverse)
     private var medications: [MedicationEntity]
+    
+    
 
     @State private var showingEditor = false
     @State private var pendingDeleteIndices: IndexSet? = nil
-    
+    @State private var selectedMedicationID: UUID? = nil
+    @State private var selectedMedication: MedicationEntity? = nil
+
     private let repository: MedicationRepositoryProtocol
     
     public init(repository: MedicationRepositoryProtocol){
@@ -22,12 +26,12 @@ struct MedicationListView: View {
 
     var body: some View {
         NavigationStack {
-            List {
+            List (selection: $selectedMedicationID){
                 ForEach(medications) { medication in
                     VStack(alignment: .leading) {
                         Text(medication.name)
                             .font(.headline)
-
+                        
                         Text("\(medication.dosage) • \(medication.frequency.displayName)")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
@@ -35,6 +39,15 @@ struct MedicationListView: View {
                 }
                 .onDelete { indexSet in
                     pendingDeleteIndices = indexSet
+                }
+            }
+            .onChange(of: selectedMedicationID) {
+                if let selectedMedicationID {
+                    selectedMedication = medications.first(where: { $0.id == selectedMedicationID })
+                    print("medication found: \(selectedMedication?.name ?? "none")")
+                }
+                else {
+                    selectedMedication = nil
                 }
             }
             .navigationTitle("Medications")
@@ -49,6 +62,14 @@ struct MedicationListView: View {
             .sheet(isPresented: $showingEditor) {
                 NavigationStack {
                     MedicationEditorView(existing: nil)
+                }
+            }
+            .sheet(item: $selectedMedication) {selected in
+                NavigationStack {
+                    MedicationEditorView(existing: selected)
+                }
+                .onDisappear() {
+                    selectedMedicationID = nil
                 }
             }
             .refreshable {
