@@ -27,4 +27,15 @@ final class MedicationViewModel {
             errorMessage = error.localizedDescription
         }
     }
+    
+    func delete(_ medication: MedicationEntity) async {
+        isRefreshing = true
+        defer { isRefreshing = false }
+        
+        do {
+            try await repository.delete(entity: medication)
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
 }

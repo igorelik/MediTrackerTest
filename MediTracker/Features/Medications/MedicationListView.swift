@@ -8,11 +8,16 @@ struct MedicationListView: View {
     private var medications: [MedicationEntity]
 
     @State private var showingEditor = false
-    @Environment(\.resolver) private var resolver
+    @State private var pendingDeleteIndices: IndexSet? = nil
+    
+    private let repository: MedicationRepositoryProtocol
+    
+    public init(repository: MedicationRepositoryProtocol){
+        self.repository = repository
+    }
 
     private var viewModel: MedicationViewModel {
-        let repo = resolver.makeRepository(context)
-        return MedicationViewModel(repository: repo)
+        return MedicationViewModel(repository: repository)
     }
 
     var body: some View {
@@ -29,7 +34,7 @@ struct MedicationListView: View {
                     }
                 }
                 .onDelete { indexSet in
-                    // delete via repository
+                    pendingDeleteIndices = indexSet
                 }
             }
             .navigationTitle("Medications")
@@ -51,6 +56,24 @@ struct MedicationListView: View {
             }
             .task {
                 await viewModel.refresh()
+            }
+            .alert("Are you sure?", isPresented: Binding(get: { pendingDeleteIndices != nil }, set: { if !$0 { pendingDeleteIndices = nil } })) {
+                Button("Delete", role: .destructive) {
+                    if let indices = pendingDeleteIndices {
+                        for index in indices {
+                            let medication = medications[index]
+                            Task {
+                                await viewModel.delete(medication)
+                            }
+                        }
+                        pendingDeleteIndices = nil
+                    }
+                }
+                Button("Cancel", role: .cancel) {
+                    pendingDeleteIndices = nil
+                }
+            } message: {
+                Text("This will permanently delete the selected medication.")
             }
         }
     }

@@ -59,7 +59,7 @@ public final class MedicationService: MedicationServiceProtocol{
         if let frequency { body["frequency"] = frequency.rawValue }
 
         let request = makeRequest(
-            path: "/users/\(username)/medications/\(id.uuidString)",
+            path: "/users/\(username)/medications/\(id.uuidString.lowercased())",
             method: "PUT",
             body: body
         )
@@ -75,7 +75,7 @@ public final class MedicationService: MedicationServiceProtocol{
         id: UUID
     ) async throws {
         let request = makeRequest(
-            path: "/users/\(username)/medications/\(id.uuidString)",
+            path: "/users/\(username)/medications/\(id.uuidString.lowercased())",
             method: "DELETE"
         )
 
@@ -111,6 +111,7 @@ public final class MedicationService: MedicationServiceProtocol{
         guard let http = response as? HTTPURLResponse,
               (200...299).contains(http.statusCode)
         else {
+            print("Server returned status code: \(String(describing: (response as! HTTPURLResponse?)?.statusCode))")
             throw URLError(.badServerResponse)
         }
 

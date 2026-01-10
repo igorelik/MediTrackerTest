@@ -22,9 +22,14 @@ public final class MedicationRepository: MedicationRepositoryProtocol {
     public func refresh() async throws {
         let remote = try await service.fetchMedications(username: username)
 
-        // Simple sync strategy 
+        // add or update local items based on the remote
         for item in remote {
             upsert(item.toEntity())
+        }
+
+        // remove local items deleted from the remote
+        for item in medications() where !remote.contains(where: { $0.id == item.id }) {
+            context.delete(item)
         }
 
         try context.save()

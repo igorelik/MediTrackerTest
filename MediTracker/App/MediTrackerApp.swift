@@ -5,8 +5,17 @@ import SwiftData
 struct MediTrackerApp: App {
     var body: some Scene {
         WindowGroup {
-            MedicationListView()
+            MedicationListRoot()
         }
         .modelContainer(for: MedicationEntity.self)
+    }
+}
+
+private struct MedicationListRoot: View {
+    @Environment(\.modelContext) private var context
+
+    var body: some View {
+        let repo = MedicationRepository(service: MedicationService(), context: context)
+        MedicationListView(repository: repo)
     }
 }
