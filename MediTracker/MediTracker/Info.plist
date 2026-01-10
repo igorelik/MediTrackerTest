@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleIdentifier</key>
+    <string>com.example.MediTracker</string>
+    <key>CFBundleName</key>
+    <string>MediTracker</string>
+    <key>BaseURI</key>
+    <string>https://api-jictu6k26a-uc.a.run.app</string>
+    <key>APIKey</key>
+    <string>healthengine-mobile-test-2026</string>
+    <key>DefaultUserName</key>
+    <string>test-user</string>
+</dict>
+</plist>

@@ -2,11 +2,14 @@ import Foundation
 
 public final class MedicationService: MedicationServiceProtocol{
 
-    private let baseURL = URL(string: "https://api-jictu6k26a-uc.a.run.app")!
-    private let apiKey = "healthengine-mobile-test-2026"
+    private let baseURL: URL
+    private let apiKey: String
 
     // MARK: - Public API
-    public init() { }
+    public init(configuration: ConfigurationServiceProtocol = ConfigurationService()) {
+        self.baseURL = configuration.BaseURI
+        self.apiKey = configuration.APIKey
+    }
 
     public func fetchMedications(username: String) async throws -> [MedicationDTO] {
         let request = makeRequest(
@@ -90,7 +93,6 @@ public final class MedicationService: MedicationServiceProtocol{
         method: String,
         body: [String: String]? = nil
     ) -> URLRequest {
-
         let url = baseURL.appendingPathComponent(path)
         var request = URLRequest(url: url)
 

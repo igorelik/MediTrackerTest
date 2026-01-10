@@ -14,16 +14,26 @@ extension EnvironmentValues {
 }
 
 public final class Resolver {
-    public var makeService: () -> MedicationServiceProtocol
-    public var makeRepository: (ModelContext) -> MedicationRepositoryProtocol
- 
-    public init(
-        makeService: @escaping () -> MedicationServiceProtocol = { MedicationService() },
-        makeRepository: @escaping (ModelContext) -> MedicationRepositoryProtocol = { context in
-            MedicationRepository(service: MedicationService(), context: context)
-        }
-    ) {
-        self.makeService = makeService
-        self.makeRepository = makeRepository
+    public func makeRepository(context: ModelContext) -> MedicationRepositoryProtocol {
+        let configService = ConfigurationService()
+        let medicationService = MedicationService(configuration: configService)
+        return MedicationRepository(service: medicationService, context: context)
+        
     }
+    
+//    public var makeService: () -> MedicationServiceProtocol
+//    public var makeRepository: (ModelContext) -> MedicationRepositoryProtocol
+//    public var makeConfigurationService: () -> ConfigurationServiceProtocol
+// 
+//    public init(
+//        makeService: @escaping () -> MedicationServiceProtocol = { MedicationService(configuration: ConfigurationService()) },
+//        makeRepository: @escaping (ModelContext) -> MedicationRepositoryProtocol = { context in
+//            MedicationRepository(service: MedicationService(configuration: ConfigurationService()), context: context)
+//        },
+//        makeConfigurationService: @escaping () -> ConfigurationServiceProtocol = { ConfigurationService() }
+//    ) {
+//        self.makeService = makeService
+//        self.makeRepository = makeRepository
+//        self.makeConfigurationService = makeConfigurationService
+//    }
 }

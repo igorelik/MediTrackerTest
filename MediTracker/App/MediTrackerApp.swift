@@ -13,9 +13,10 @@ struct MediTrackerApp: App {
 
 private struct MedicationListRoot: View {
     @Environment(\.modelContext) private var context
+    @Environment(\.resolver) private var resolver
 
     var body: some View {
-        let repo = MedicationRepository(service: MedicationService(), context: context)
+        let repo = resolver.makeRepository(context: context)
         MedicationListView(repository: repo)
     }
 }

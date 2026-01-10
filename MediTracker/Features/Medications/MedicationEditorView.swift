@@ -56,7 +56,7 @@ struct MedicationEditorView: View {
         isSaving = true
         defer { isSaving = false }
 
-        let repository = resolver.makeRepository(context)
+        let repository = resolver.makeRepository(context: context)
 
         do {
             if let existing {
