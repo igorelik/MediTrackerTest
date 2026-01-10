@@ -4,12 +4,15 @@ import SwiftData
 public final class MedicationRepository: MedicationRepositoryProtocol {
 
     private let service: MedicationServiceProtocol
+    private let authService: AuthenticationServiceProtocol
     private let context: ModelContext
-    private let username = "test-user"
-
-    public init(service: MedicationServiceProtocol, context: ModelContext) {
+ 
+    public init(service: MedicationServiceProtocol,
+                authService: AuthenticationServiceProtocol,
+                context: ModelContext) {
         self.service = service
         self.context = context
+        self.authService = authService
     }
 
     public func medications() -> [MedicationEntity] {
@@ -20,7 +23,7 @@ public final class MedicationRepository: MedicationRepositoryProtocol {
     }
 
     public func refresh() async throws {
-        let remote = try await service.fetchMedications(username: username)
+        let remote = try await service.fetchMedications(username: authService.username)
 
         // add or update local items based on the remote
         for item in remote {
@@ -42,7 +45,7 @@ public final class MedicationRepository: MedicationRepositoryProtocol {
     ) async throws {
 
         let dto = try await service.create(
-            username: username,
+            username: authService.username,
             name: name,
             dosage: dosage,
             frequency: frequency

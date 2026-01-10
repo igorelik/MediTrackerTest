@@ -17,23 +17,11 @@ public final class Resolver {
     public func makeRepository(context: ModelContext) -> MedicationRepositoryProtocol {
         let configService = ConfigurationService()
         let medicationService = MedicationService(configuration: configService)
-        return MedicationRepository(service: medicationService, context: context)
-        
+        let authService = makeAuthenticationService()
+        return MedicationRepository(service: medicationService, authService: authService, context: context)
     }
     
-//    public var makeService: () -> MedicationServiceProtocol
-//    public var makeRepository: (ModelContext) -> MedicationRepositoryProtocol
-//    public var makeConfigurationService: () -> ConfigurationServiceProtocol
-// 
-//    public init(
-//        makeService: @escaping () -> MedicationServiceProtocol = { MedicationService(configuration: ConfigurationService()) },
-//        makeRepository: @escaping (ModelContext) -> MedicationRepositoryProtocol = { context in
-//            MedicationRepository(service: MedicationService(configuration: ConfigurationService()), context: context)
-//        },
-//        makeConfigurationService: @escaping () -> ConfigurationServiceProtocol = { ConfigurationService() }
-//    ) {
-//        self.makeService = makeService
-//        self.makeRepository = makeRepository
-//        self.makeConfigurationService = makeConfigurationService
-//    }
+    public func makeAuthenticationService() -> AuthenticationServiceProtocol {
+        AuthenticationService()
+    }
 }
