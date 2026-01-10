@@ -4,16 +4,16 @@ struct MedicationEditorView: View {
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
-    @Environment(\.resolver) private var resolver
-
-    let existing: MedicationEntity?
-
+ 
     @State private var name: String = ""
     @State private var dosage: String = ""
     @State private var frequency: MedicationFrequency = .daily
     @State private var isSaving = false
     @State private var errorMessage: String?
 
+
+    let viewModel: MedicationViewModel
+    let existing: MedicationEntity?
     private let username = "test-user"
 
     var body: some View {
@@ -56,28 +56,25 @@ struct MedicationEditorView: View {
         isSaving = true
         defer { isSaving = false }
 
-        let repository = resolver.makeRepository(context: context)
-
-        do {
-            if let existing {
-                try await repository.update(
-                    entity: existing,
-                    name: name,
-                    dosage: dosage,
-                    frequency: frequency
-                )
-            } else {
-                try await repository.create(
-                    name: name,
-                    dosage: dosage,
-                    frequency: frequency,
-                    username: username
-                )
-            }
-
+        if let existing {
+            await viewModel.update(
+                existing: existing,
+                name: name,
+                dosage: dosage,
+                frequency: frequency
+            )
+        } else {
+            await viewModel.create(
+                name: name,
+                dosage: dosage,
+                frequency: frequency,
+            )
+        }
+        if let vmError = viewModel.errorMessage,!vmError.isEmpty {
+            errorMessage = vmError
+        }
+        else {
             dismiss()
-        } catch {
-            errorMessage = error.localizedDescription
         }
     }
 }

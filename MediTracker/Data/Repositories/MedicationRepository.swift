@@ -38,8 +38,7 @@ public final class MedicationRepository: MedicationRepositoryProtocol {
     public func create(
         name: String,
         dosage: String,
-        frequency: MedicationFrequency,
-        username: String
+        frequency: MedicationFrequency
     ) async throws {
 
         let dto = try await service.create(

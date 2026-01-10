@@ -61,12 +61,12 @@ struct MedicationListView: View {
             }
             .sheet(isPresented: $showingEditor) {
                 NavigationStack {
-                    MedicationEditorView(existing: nil)
+                    MedicationEditorView(viewModel: viewModel, existing: nil)
                 }
             }
             .sheet(item: $selectedMedication) {selected in
                 NavigationStack {
-                    MedicationEditorView(existing: selected)
+                    MedicationEditorView(viewModel: viewModel, existing: selected)
                 }
                 .onDisappear() {
                     selectedMedicationID = nil

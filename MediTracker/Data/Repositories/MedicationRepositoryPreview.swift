@@ -36,7 +36,7 @@ final class MedicationRepositoryPreview: MedicationRepositoryProtocol {
         // Preview repository has no remote, so no-op
     }
 
-    func create(name: String, dosage: String, frequency: MedicationFrequency, username: String) async throws {
+    func create(name: String, dosage: String, frequency: MedicationFrequency) async throws {
         let now = Date()
         let entity = MedicationEntity(id: UUID(), username: username, name: name, dosage: dosage, frequency: frequency, createdAt: now, updatedAt: now)
         context.insert(entity)
