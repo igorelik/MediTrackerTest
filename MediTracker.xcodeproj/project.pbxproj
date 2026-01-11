@@ -53,11 +53,6 @@
 			path = MediTrackerTests;
 			sourceTree = "<group>";
 		};
-		42C41A712F1198E700972F52 /* MediTrackerUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = MediTrackerUITests;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,7 +85,6 @@
 			children = (
 				42C41A572F1198E600972F52 /* MediTracker */,
 				42C41A672F1198E700972F52 /* MediTrackerTests */,
-				42C41A712F1198E700972F52 /* MediTrackerUITests */,
 				42C41A562F1198E600972F52 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -165,9 +159,6 @@
 			);
 			dependencies = (
 				42C41A702F1198E700972F52 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				42C41A712F1198E700972F52 /* MediTrackerUITests */,
 			);
 			name = MediTrackerUITests;
 			packageProductDependencies = (

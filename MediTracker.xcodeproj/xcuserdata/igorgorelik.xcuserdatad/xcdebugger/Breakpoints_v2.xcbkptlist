@@ -20,5 +20,171 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D2CBAF73-292C-44D5-8D0F-B4CA033F6ADE"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MediTrackerTests/MedicationRepositoryTests.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "60"
+            endingLineNumber = "60"
+            landmarkName = "createAddsEntity()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6E1DF5BF-6B74-41D1-900C-BC34FEB2A984"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MediTrackerTests/MedicationServiceTests.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
+            landmarkName = "createReturnsCreatedItem()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "6E1DF5BF-6B74-41D1-900C-BC34FEB2A984 - 8c1b4f3322ee7f3c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for MediTrackerTests.MedicationServiceTests.createReturnsCreatedItem() async throws -&gt; ()"
+                  moduleName = "MediTrackerTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/igorgorelik/Work/Experiments/Healthengine/MediTracker/MediTrackerTests/MedicationServiceTests.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "81"
+                  endingLineNumber = "81">
+               </Location>
+               <Location
+                  uuid = "6E1DF5BF-6B74-41D1-900C-BC34FEB2A984 - c5ef35aab4f2ec3f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) await resume partial function for MediTrackerTests.MedicationServiceTests.createReturnsCreatedItem() async throws -&gt; ()"
+                  moduleName = "MediTrackerTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/igorgorelik/Work/Experiments/Healthengine/MediTracker/MediTrackerTests/MedicationServiceTests.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "81"
+                  endingLineNumber = "81">
+               </Location>
+               <Location
+                  uuid = "6E1DF5BF-6B74-41D1-900C-BC34FEB2A984 - 1d79d8582c4f4527"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(8) suspend resume partial function for MediTrackerTests.MedicationServiceTests.createReturnsCreatedItem() async throws -&gt; ()"
+                  moduleName = "MediTrackerTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/igorgorelik/Work/Experiments/Healthengine/MediTracker/MediTrackerTests/MedicationServiceTests.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "81"
+                  endingLineNumber = "81">
+               </Location>
+               <Location
+                  uuid = "6E1DF5BF-6B74-41D1-900C-BC34FEB2A984 - e65f2c7c9e0a28df"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(5) suspend resume partial function for MediTrackerTests.MedicationServiceTests.createReturnsCreatedItem() async throws -&gt; ()"
+                  moduleName = "MediTrackerTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///var/folders/8c/w5dn_2z16vz80qcjmyxgv2pc0000gn/T/-3edfeb.@__swiftmacro_16MediTrackerTests0033MedicationServiceTestsswift_DbGHjfMX81_8_6expectfMf_.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1"
+                  endingLineNumber = "1">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "688657B5-D9F1-4BDD-86C8-261B9845EC79"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MediTrackerTests/MedicationServiceTests.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "83"
+            endingLineNumber = "83"
+            landmarkName = "createReturnsCreatedItem()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "503847FE-8380-4AEF-B240-6E5EF319D0A2"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MediTrackerTests/MedicationServiceTests.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
+            landmarkName = "createReturnsCreatedItem()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "503847FE-8380-4AEF-B240-6E5EF319D0A2 - e089bc97c8c733a3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for MediTrackerTests.MedicationServiceTests.createReturnsCreatedItem() async throws -&gt; ()"
+                  moduleName = "MediTrackerTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/igorgorelik/Work/Experiments/Healthengine/MediTracker/MediTrackerTests/MedicationServiceTests.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "84"
+                  endingLineNumber = "84">
+               </Location>
+               <Location
+                  uuid = "503847FE-8380-4AEF-B240-6E5EF319D0A2 - a727278a195ce7bd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(7) suspend resume partial function for MediTrackerTests.MedicationServiceTests.createReturnsCreatedItem() async throws -&gt; ()"
+                  moduleName = "MediTrackerTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/igorgorelik/Work/Experiments/Healthengine/MediTracker/MediTrackerTests/MedicationServiceTests.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "84"
+                  endingLineNumber = "84">
+               </Location>
+               <Location
+                  uuid = "503847FE-8380-4AEF-B240-6E5EF319D0A2 - 1d79d8582c4f45ba"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(8) suspend resume partial function for MediTrackerTests.MedicationServiceTests.createReturnsCreatedItem() async throws -&gt; ()"
+                  moduleName = "MediTrackerTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/igorgorelik/Work/Experiments/Healthengine/MediTracker/MediTrackerTests/MedicationServiceTests.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "84"
+                  endingLineNumber = "84">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

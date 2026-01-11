@@ -86,7 +86,7 @@ public final class MedicationService: MedicationServiceProtocol{
     }
     
     // MARK: - private helpers
-    private struct EmptyResponse: Codable {}
+    public struct EmptyResponse: Codable {}
     
     private func makeRequest(
         path: String,
