@@ -7,7 +7,7 @@ This document captures key architectural decisions and the reasoning behind them
 ## ADR-001: Application Architecture
 
 **Status:** Accepted  
-**Date:** 2026-01-XX
+**Date:** 2026-01-11
 
 ### Decision
 
@@ -101,10 +101,11 @@ This favours simplicity over correctness for complex offline or conflict scenari
 Implement reminders using `UNUserNotificationCenter`.
 
 - Notifications are scheduled based on medication frequency
-- “As needed” medications do not schedule automatic reminders
+- “As needed” medications do not schedule automatic reminders. However a single reminder can be configured
 
 ### Considerations
 
 - Notification permissions
 - Time zone changes
 - Rescheduling on app launch
+- rescheduling on medication update

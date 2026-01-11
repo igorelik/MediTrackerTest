@@ -25,4 +25,8 @@ public final class Resolver {
     public func makeAuthenticationService() -> AuthenticationServiceProtocol {
         AuthenticationService()
     }
+
+    public func makeNotificationPermissionService() -> NotificationPermissionServiceProtocol {
+        NotificationPermissionService()
+    }
 }
