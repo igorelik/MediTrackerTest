@@ -15,7 +15,7 @@ struct MedicationEditorView: View {
     @State private var reminderTime2: Date = Date()
     @State private var reminderWeekday: Int = Calendar.current.component(.weekday, from: Date())
     @State private var reminderWeekdayTime: Date = Date()
-    @State private var asNeededDate: Date = Date()
+    @State private var reminderAsNeededDate: Date = Date()
 
     let viewModel: MedicationViewModel
     let existing: MedicationEntity?
@@ -40,9 +40,9 @@ struct MedicationEditorView: View {
                     switch frequency {
                     case .asNeeded:
                         VStack(alignment: .leading) {
-                            DatePicker("Select date", selection: $asNeededDate, displayedComponents: .date)
+                            DatePicker("Select date", selection: $reminderAsNeededDate, displayedComponents: .date)
                                 .datePickerStyle(.graphical)
-                            DatePicker("Time", selection: $asNeededDate, displayedComponents: .hourAndMinute)
+                            DatePicker("Time", selection: $reminderAsNeededDate, displayedComponents: .hourAndMinute)
                         }
                     case .daily:
                         DatePicker("Time", selection: $reminderTime1, displayedComponents: .hourAndMinute)
@@ -90,7 +90,7 @@ struct MedicationEditorView: View {
                         reminderWeekdayTime = n1.notificationTime ?? Date()
                         reminderWeekday = n1.weekday ?? Calendar.current.component(.weekday, from: Date())
                     case .asNeeded:
-                        asNeededDate = n1.notificationTime ?? Date()
+                        reminderAsNeededDate = n1.notificationTime ?? Date()
                     }
                 }
                 else {
@@ -118,7 +118,7 @@ struct MedicationEditorView: View {
                 reminderTime2: remindersEnabled ? reminderTime2 : nil,
                 reminderWeekday: remindersEnabled ? reminderWeekday : nil,
                 reminderWeekdayTime: remindersEnabled ? reminderWeekdayTime : nil,
-                reminderAsNeededDate: remindersEnabled ? asNeededDate : nil
+                reminderAsNeededDate: remindersEnabled ? reminderAsNeededDate : nil
             )
         } else {
             await viewModel.create(
@@ -130,7 +130,7 @@ struct MedicationEditorView: View {
                 reminderTime2: remindersEnabled ? reminderTime2 : nil,
                 reminderWeekday: remindersEnabled ? reminderWeekday : nil,
                 reminderWeekdayTime: remindersEnabled ? reminderWeekdayTime : nil,
-                reminderAsNeededDate: remindersEnabled ? asNeededDate : nil
+                reminderAsNeededDate: remindersEnabled ? reminderAsNeededDate : nil
             )
         }
         if let vmError = viewModel.errorMessage,!vmError.isEmpty {

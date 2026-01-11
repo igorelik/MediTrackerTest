@@ -162,43 +162,9 @@ public final class MedicationRepository: MedicationRepositoryProtocol {
 
         try context.save()
 
-        // create new notifications if enabled
+        // create notification(s) if reminder is enabled
         if remindersEnabled {
             try await createNotifications(for: entity, reminderTime1: reminderTime1, reminderTime2: reminderTime2, reminderWeekday: reminderWeekday, reminderWeekdayTime: reminderWeekdayTime, reminderAsNeededDate: reminderAsNeededDate)
-//            if frequency == .daily {
-//                let notif = NotificationEntity(id: UUID(), medicationId: entity.id, frequency: frequency, notificationTime: reminderTime1, weekday: nil, createdAt: Date(), updatedAt: Date())
-//                context.insert(notif)
-//                try context.save()
-//                try await reminderService.schedule(notification: notif, for: entity)
-//            } else if frequency == .twiceDaily {
-//                if let t1 = reminderTime1 {
-//                    let n1 = NotificationEntity(id: UUID(), medicationId: entity.id, frequency: frequency, notificationTime: t1, weekday: nil, createdAt: Date(), updatedAt: Date())
-//                    context.insert(n1)
-//                    try context.save()
-//                    try await reminderService.schedule(notification: n1, for: entity)
-//                }
-//                if let t2 = reminderTime2 {
-//                    let n2 = NotificationEntity(id: UUID(), medicationId: entity.id, frequency: frequency, notificationTime: t2, weekday: nil, createdAt: Date(), updatedAt: Date())
-//                    context.insert(n2)
-//                    try context.save()
-//                    try await reminderService.schedule(notification: n2, for: entity)
-//                }
-//            } else if frequency == .weekly {
-//                if let wd = reminderWeekday, let time = reminderWeekdayTime {
-//                    let n = NotificationEntity(id: UUID(), medicationId: entity.id, frequency: frequency, notificationTime: time, weekday: wd, createdAt: Date(), updatedAt: Date())
-//                    context.insert(n)
-//                    try context.save()
-//                    try await reminderService.schedule(notification: n, for: entity)
-//                }
-//            }
-//            else if frequency == .asNeeded {
-//                if let time = reminderAsNeededDate {
-//                    let n = NotificationEntity(id: UUID(), medicationId: entity.id, frequency: frequency, notificationTime: time, weekday: nil, createdAt: Date(), updatedAt: Date())
-//                    context.insert(n)
-//                    try context.save()
-//                    try await reminderService.schedule(notification: n, for: entity)
-//                }
-//            }
         }
     }
     
