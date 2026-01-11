@@ -3,21 +3,22 @@ import SwiftData
 
 struct MedicationListView: View {
     @Environment(\.modelContext) private var context
-
+ 
     @Query(sort: \MedicationEntity.createdAt, order: .reverse)
     private var medications: [MedicationEntity]
     
-    
-
     @State private var showingEditor = false
+    @State private var showingLogin = false
     @State private var pendingDeleteIndices: IndexSet? = nil
     @State private var selectedMedicationID: UUID? = nil
     @State private var selectedMedication: MedicationEntity? = nil
 
     private let repository: MedicationRepositoryProtocol
+    private let authService: AuthenticationServiceProtocol
     
-    public init(repository: MedicationRepositoryProtocol){
+    public init(repository: MedicationRepositoryProtocol, authService: AuthenticationServiceProtocol){
         self.repository = repository
+        self.authService = authService
     }
 
     private var viewModel: MedicationViewModel {
@@ -50,7 +51,7 @@ struct MedicationListView: View {
                     selectedMedication = nil
                 }
             }
-            .navigationTitle("Medications")
+            .navigationTitle("Medications for \(authService.username)")
             .toolbar {
                 Button {
                     showingEditor = true
@@ -58,6 +59,28 @@ struct MedicationListView: View {
                     Image(systemName: "plus")
                 }
                 .accessibilityLabel("Add")
+                Button {
+                    Task {
+                        try await authService.logout()
+                        showingLogin = true
+                    }
+                } label: {
+                    Image(systemName: "figure.walk.departure")
+                }
+                .accessibilityLabel("Logout")
+            }
+            .sheet(isPresented: $showingLogin) {
+                LoginView(authService: authService, isPresented: $showingLogin)
+                    .interactiveDismissDisabled(true)
+                    .onDisappear() {
+                        if authService.isLoggedIn {
+                            Task {
+                                await viewModel.refresh()
+                            }
+                        } else {
+                            showingLogin = true
+                        }
+                    }
             }
             .sheet(isPresented: $showingEditor) {
                 NavigationStack {
@@ -76,7 +99,11 @@ struct MedicationListView: View {
                 await viewModel.refresh()
             }
             .task {
-                await viewModel.refresh()
+                if authService.isLoggedIn {
+                    await viewModel.refresh()
+                } else {
+                    showingLogin = true
+                }
             }
             .alert("Are you sure?", isPresented: Binding(get: { pendingDeleteIndices != nil }, set: { if !$0 { pendingDeleteIndices = nil } })) {
                 Button("Delete", role: .destructive) {
@@ -99,3 +126,16 @@ struct MedicationListView: View {
         }
     }
 }
+
+struct MedicationListView_Previews: PreviewProvider {
+    static var previewContext: ModelContext = {
+        let ctx = ModelContext(try! ModelContainer(for: MedicationEntity.self))
+        return ctx
+    }()
+    
+    static var previews: some View {
+        MedicationListView(repository: MedicationRepositoryPreview(context: previewContext), authService: AuthenticationServicePreview())
+            .environment(\.modelContext, previewContext)
+    }
+}
+

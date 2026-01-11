@@ -1,6 +1,5 @@
 import Foundation
 
-
 @Observable
 final class MedicationViewModel {
 

@@ -17,6 +17,7 @@ private struct MedicationListRoot: View {
 
     var body: some View {
         let repo = resolver.makeRepository(context: context)
-        MedicationListView(repository: repo)
+        let authService = resolver.makeAuthenticationService()
+        MedicationListView(repository: repo, authService: authService)
     }
 }

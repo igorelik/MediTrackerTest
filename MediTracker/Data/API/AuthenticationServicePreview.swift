@@ -1,11 +1,12 @@
 import Foundation
 
 public final class AuthenticationServicePreview: AuthenticationServiceProtocol {
-    private var stored: String? = "preview-user"
+    private var stored: String = "preview-user"
     public init() {}
 
     public var username: String { stored }
-
+    public var isLoggedIn: Bool { !username.isEmpty }
+    
     public func login(username: String, password: String) async throws {
         // accept any non-empty credentials in preview
         let trimmed = username.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -13,5 +14,9 @@ public final class AuthenticationServicePreview: AuthenticationServiceProtocol {
             throw AuthenticationService.AuthenticationError.invalidCredentials
         }
         stored = trimmed
+    }
+    
+    public func logout() async throws {
+        stored = ""
     }
 }

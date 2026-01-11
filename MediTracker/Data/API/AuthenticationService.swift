@@ -8,6 +8,8 @@ public final class AuthenticationService: AuthenticationServiceProtocol {
         self.userDefaults = userDefaults
     }
 
+    public var isLoggedIn: Bool { !username.isEmpty }
+    
     public var username: String {
         userDefaults.string(forKey: key) ?? String()
     }
@@ -19,6 +21,10 @@ public final class AuthenticationService: AuthenticationServiceProtocol {
         }
 
         userDefaults.set(trimmed, forKey: key)
+    }
+    
+    public func logout() async throws {
+        userDefaults.set("", forKey: key)
     }
 
     public enum AuthenticationError: Error {
