@@ -17,7 +17,6 @@ struct MedicationEditorView: View {
     @State private var reminderWeekdayTime: Date = Date()
     @State private var asNeededDate: Date = Date()
 
-
     let viewModel: MedicationViewModel
     let existing: MedicationEntity?
     

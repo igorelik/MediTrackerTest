@@ -86,13 +86,21 @@ struct MedicationListView: View {
                 NavigationStack {
                     MedicationEditorView(viewModel: viewModel, existing: nil)
                 }
+                .onDisappear() {
+                    Task {
+                        await viewModel.refresh()
+                    }
+                }
             }
             .sheet(item: $selectedMedication) {selected in
                 NavigationStack {
                     MedicationEditorView(viewModel: viewModel, existing: selected)
                 }
                 .onDisappear() {
-                    selectedMedicationID = nil
+                    Task {
+                        selectedMedicationID = nil
+                        await viewModel.refresh()
+                    }
                 }
             }
             .refreshable {

@@ -42,6 +42,9 @@
             <PersistentString
                value = "n1.notificationTime!">
             </PersistentString>
+            <PersistentString
+               value = "existing.notification1!">
+            </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
@@ -55,6 +58,17 @@
             </PersistentString>
             <PersistentString
                value = "http.statusCode">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MedicationEditorView.save():MedicationEditorView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "remindersEnabled">
+            </PersistentString>
+            <PersistentString
+               value = "asNeededDate">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
