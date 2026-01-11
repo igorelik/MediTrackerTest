@@ -29,22 +29,9 @@
 		42C41A6E2F1198E700972F52 /* MediTrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MediTrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		42BAACEE2F130C15004A4E93 /* Exceptions for "MediTracker" folder in "MediTracker" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				MediTracker/Info.plist,
-			);
-			target = 42C41A542F1198E600972F52 /* MediTracker */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		42C41A572F1198E600972F52 /* MediTracker */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				42BAACEE2F130C15004A4E93 /* Exceptions for "MediTracker" folder in "MediTracker" target */,
-			);
 			path = MediTracker;
 			sourceTree = "<group>";
 		};

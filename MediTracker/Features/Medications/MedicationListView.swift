@@ -27,19 +27,41 @@ struct MedicationListView: View {
 
     var body: some View {
         NavigationStack {
-            List (selection: $selectedMedicationID){
-                ForEach(medications) { medication in
-                    VStack(alignment: .leading) {
-                        Text(medication.name)
-                            .font(.headline)
-                        
-                        Text("\(medication.dosage) • \(medication.frequency.displayName)")
-                            .font(.subheadline)
+            Group {
+                if medications.isEmpty {
+                    VStack(spacing: 20) {
+                        Image("NoMedication")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 240, height: 240)
+                            .accessibilityHidden(true)
+
+                        Text("No medications yet.")
+                            .font(.title3)
+
+                        Text("Tap the '+' button to add your first medication.")
+                            .multilineTextAlignment(.center)
                             .foregroundStyle(.secondary)
+                            .padding(.horizontal)
                     }
-                }
-                .onDelete { indexSet in
-                    pendingDeleteIndices = indexSet
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color(.systemBackground))
+                } else {
+                    List (selection: $selectedMedicationID){
+                        ForEach(medications) { medication in
+                            VStack(alignment: .leading) {
+                                Text(medication.name)
+                                    .font(.headline)
+                                
+                                Text("\(medication.dosage) • \(medication.frequency.displayName)")
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        .onDelete { indexSet in
+                            pendingDeleteIndices = indexSet
+                        }
+                    }
                 }
             }
             .onChange(of: selectedMedicationID) {

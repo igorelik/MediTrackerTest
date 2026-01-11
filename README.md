@@ -103,7 +103,7 @@ These trade-offs are documented in the ADR.
 - Accessibility and localisation
 - Improved error handling, data validation, and recovery
 - App Intents / Siri Shortcuts integration
-- More attention on UI/UX, some animation
+- More attention on UI/UX, some animation, colors, images
 - Proper iOC implemntation. 
 - "Are you sure" prompt on logout
 - More unit tests, especially around notifications
