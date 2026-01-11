@@ -129,7 +129,7 @@ struct MedicationListView: View {
 
 struct MedicationListView_Previews: PreviewProvider {
     static var previewContext: ModelContext = {
-        let ctx = ModelContext(try! ModelContainer(for: MedicationEntity.self))
+        let ctx = ModelContext(try! ModelContainer(for: MedicationEntity.self, NotificationEntity.self))
         return ctx
     }()
     

@@ -45,7 +45,7 @@ struct MedicationRepositoryTests {
 
     func makeContext() throws -> ModelContext  {
         let modelConfig = ModelConfiguration(isStoredInMemoryOnly: true)
-        return try ModelContext(ModelContainer(for: MedicationEntity.self, configurations: modelConfig))
+        return try ModelContext(ModelContainer(for: MedicationEntity.self, NotificationEntity.self, configurations: modelConfig))
     }
 
     @Test func createAddsEntity() async throws {
@@ -54,7 +54,7 @@ struct MedicationRepositoryTests {
         let auth = MockAuthService(username: "tester")
         let repo = await MedicationRepository(service: service, authService: auth, context: ctx)
 
-        try await repo.create(name: "Aspirin", dosage: "100mg", frequency: .daily)
+        try await repo.create(name: "Aspirin", dosage: "100mg", frequency: .daily, remindersEnabled: false, reminderTime1: nil, reminderTime2: nil, reminderWeekday: nil, reminderWeekdayTime: nil)
 
         let meds = await repo.medications()
         #expect(meds.count == 1)
@@ -71,13 +71,13 @@ struct MedicationRepositoryTests {
         let repo = await MedicationRepository(service: service, authService: auth, context: ctx)
 
         // initial remote set: two items
-        try await repo.create(name: "One", dosage: "1mg", frequency: .daily)
-        try await repo.create(name: "Two", dosage: "2mg", frequency: .daily)
+        try await repo.create(name: "One", dosage: "1mg", frequency: .daily, remindersEnabled: false, reminderTime1: nil, reminderTime2: nil, reminderWeekday: nil, reminderWeekdayTime: nil)
+        try await repo.create(name: "Two", dosage: "2mg", frequency: .daily, remindersEnabled: false, reminderTime1: nil, reminderTime2: nil, reminderWeekday: nil, reminderWeekdayTime: nil)
        
         let meds = await repo.medications()
         #expect(meds.count == 2)
         let m = meds.first!
-        try await repo.update(entity: m, name: "Aspirin", dosage: "100mg", frequency: .daily)
+        try await repo.update(entity: m, name: "Aspirin", dosage: "100mg", frequency: .daily, remindersEnabled: false, reminderTime1: nil, reminderTime2: nil, reminderWeekday: nil, reminderWeekdayTime: nil)
         let updatedMeds = await repo.medications()
         #expect(updatedMeds.count == 2)
         let updatedMed = updatedMeds.first!
@@ -92,8 +92,8 @@ struct MedicationRepositoryTests {
         let repo = await MedicationRepository(service: service, authService: auth, context: ctx)
 
         // initial remote set: two items
-        try await repo.create(name: "One", dosage: "1mg", frequency: .daily)
-        try await repo.create(name: "Two", dosage: "2mg", frequency: .daily)
+        try await repo.create(name: "One", dosage: "1mg", frequency: .daily, remindersEnabled: false, reminderTime1: nil, reminderTime2: nil, reminderWeekday: nil, reminderWeekdayTime: nil)
+        try await repo.create(name: "Two", dosage: "2mg", frequency: .daily, remindersEnabled: false, reminderTime1: nil, reminderTime2: nil, reminderWeekday: nil, reminderWeekdayTime: nil)
        
         let meds = await repo.medications()
         #expect(meds.count == 2)

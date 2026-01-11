@@ -36,15 +36,32 @@ final class MedicationRepositoryPreview: MedicationRepositoryProtocol {
         // Preview repository has no remote, so no-op
     }
 
-    func create(name: String, dosage: String, frequency: MedicationFrequency) async throws {
+    func create(
+        name: String,
+        dosage: String,
+        frequency: MedicationFrequency,
+        remindersEnabled: Bool,
+        reminderTime1: Date?,
+        reminderTime2: Date?,
+        reminderWeekday: Int?,
+        reminderWeekdayTime: Date?
+    ) async throws {
         let now = Date()
-        let entity = MedicationEntity(id: UUID(), username: username, name: name, dosage: dosage, frequency: frequency, createdAt: now, updatedAt: now)
+        let entity = MedicationEntity(
+            id: UUID(),
+            username: username,
+            name: name,
+            dosage: dosage,
+            frequency: frequency,
+            createdAt: now,
+            updatedAt: now
+        )
         context.insert(entity)
         try context.save()
     }
 
     @MainActor
-    func update(entity: MedicationEntity, name: String, dosage: String, frequency: MedicationFrequency) async throws {
+    func update(entity: MedicationEntity, name: String, dosage: String, frequency: MedicationFrequency, remindersEnabled: Bool, reminderTime1: Date?, reminderTime2: Date?, reminderWeekday: Int?, reminderWeekdayTime: Date?) async throws {
         entity.name = name
         entity.dosage = dosage
         entity.frequency = frequency

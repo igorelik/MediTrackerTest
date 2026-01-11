@@ -10,6 +10,11 @@ struct MedicationEditorView: View {
     @State private var frequency: MedicationFrequency = .daily
     @State private var isSaving = false
     @State private var errorMessage: String?
+    @State private var remindersEnabled: Bool = false
+    @State private var reminderTime1: Date = Date()
+    @State private var reminderTime2: Date = Date()
+    @State private var reminderWeekday: Int = Calendar.current.component(.weekday, from: Date())
+    @State private var reminderWeekdayTime: Date = Date()
 
 
     let viewModel: MedicationViewModel
@@ -25,6 +30,29 @@ struct MedicationEditorView: View {
                 Picker("Frequency", selection: $frequency) {
                     ForEach(MedicationFrequency.allCases, id: \.self) {
                         Text($0.displayName)
+                    }
+                }
+            }
+
+            Section("Reminders") {
+                Toggle("Enable reminders", isOn: $remindersEnabled)
+
+                if remindersEnabled {
+                    switch frequency {
+                    case .asNeeded:
+                        Text("No automatic reminders for as-needed medications.")
+                    case .daily:
+                        DatePicker("Time", selection: $reminderTime1, displayedComponents: .hourAndMinute)
+                    case .twiceDaily:
+                        DatePicker("Morning/First time", selection: $reminderTime1, displayedComponents: .hourAndMinute)
+                        DatePicker("Evening/Second time", selection: $reminderTime2, displayedComponents: .hourAndMinute)
+                    case .weekly:
+                        Picker("Day", selection: $reminderWeekday) {
+                            ForEach(1...7, id: \.self) { idx in
+                                Text(Calendar.current.weekdaySymbols[idx - 1]).tag(idx)
+                            }
+                        }
+                        DatePicker("Time", selection: $reminderWeekdayTime, displayedComponents: .hourAndMinute)
                     }
                 }
             }
@@ -61,13 +89,23 @@ struct MedicationEditorView: View {
                 existing: existing,
                 name: name,
                 dosage: dosage,
-                frequency: frequency
+                frequency: frequency,
+                remindersEnabled: remindersEnabled,
+                reminderTime1: remindersEnabled ? reminderTime1 : nil,
+                reminderTime2: remindersEnabled ? reminderTime2 : nil,
+                reminderWeekday: remindersEnabled ? reminderWeekday : nil,
+                reminderWeekdayTime: remindersEnabled ? reminderWeekdayTime : nil
             )
         } else {
             await viewModel.create(
                 name: name,
                 dosage: dosage,
                 frequency: frequency,
+                remindersEnabled: remindersEnabled,
+                reminderTime1: remindersEnabled ? reminderTime1 : nil,
+                reminderTime2: remindersEnabled ? reminderTime2 : nil,
+                reminderWeekday: remindersEnabled ? reminderWeekday : nil,
+                reminderWeekdayTime: remindersEnabled ? reminderWeekdayTime : nil
             )
         }
         if let vmError = viewModel.errorMessage,!vmError.isEmpty {

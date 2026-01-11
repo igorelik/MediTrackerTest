@@ -7,7 +7,7 @@ struct MediTrackerApp: App {
         WindowGroup {
             MedicationListRoot()
         }
-        .modelContainer(for: MedicationEntity.self)
+        .modelContainer(for: [MedicationEntity.self, NotificationEntity.self])
     }
 }
 

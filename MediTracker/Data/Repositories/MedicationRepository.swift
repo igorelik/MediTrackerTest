@@ -5,14 +5,17 @@ public final class MedicationRepository: MedicationRepositoryProtocol {
 
     private let service: MedicationServiceProtocol
     private let authService: AuthenticationServiceProtocol
+    private let reminderService: ReminderServiceProtocol
     private let context: ModelContext
  
     public init(service: MedicationServiceProtocol,
                 authService: AuthenticationServiceProtocol,
-                context: ModelContext) {
+                context: ModelContext,
+                reminderService: ReminderServiceProtocol = ReminderService()) {
         self.service = service
         self.context = context
         self.authService = authService
+        self.reminderService = reminderService
     }
 
     public func medications() -> [MedicationEntity] {
@@ -41,7 +44,12 @@ public final class MedicationRepository: MedicationRepositoryProtocol {
     public func create(
         name: String,
         dosage: String,
-        frequency: MedicationFrequency
+        frequency: MedicationFrequency,
+        remindersEnabled: Bool,
+        reminderTime1: Date?,
+        reminderTime2: Date?,
+        reminderWeekday: Int?,
+        reminderWeekdayTime: Date?
     ) async throws {
 
         let dto = try await service.create(
@@ -51,8 +59,40 @@ public final class MedicationRepository: MedicationRepositoryProtocol {
             frequency: frequency
         )
 
-        context.insert(dto.toEntity())
+        let entity = dto.toEntity()
+        context.insert(entity)
         try context.save()
+
+        // handle notifications via NotificationEntity records
+        if remindersEnabled {
+            // create notification entities depending on frequency
+            if frequency == .daily {
+                let notif = NotificationEntity(id: UUID(), medicationId: entity.id, frequency: frequency, notificationTime: reminderTime1, weekday: nil, createdAt: Date(), updatedAt: Date())
+                context.insert(notif)
+                try context.save()
+                try await reminderService.schedule(notification: notif, for: entity)
+            } else if frequency == .twiceDaily {
+                if let t1 = reminderTime1 {
+                    let n1 = NotificationEntity(id: UUID(), medicationId: entity.id, frequency: frequency, notificationTime: t1, weekday: nil, createdAt: Date(), updatedAt: Date())
+                    context.insert(n1)
+                    try context.save()
+                    try await reminderService.schedule(notification: n1, for: entity)
+                }
+                if let t2 = reminderTime2 {
+                    let n2 = NotificationEntity(id: UUID(), medicationId: entity.id, frequency: frequency, notificationTime: t2, weekday: nil, createdAt: Date(), updatedAt: Date())
+                    context.insert(n2)
+                    try context.save()
+                    try await reminderService.schedule(notification: n2, for: entity)
+                }
+            } else if frequency == .weekly {
+                if let wd = reminderWeekday, let time = reminderWeekdayTime {
+                    let n = NotificationEntity(id: UUID(), medicationId: entity.id, frequency: frequency, notificationTime: time, weekday: wd, createdAt: Date(), updatedAt: Date())
+                    context.insert(n)
+                    try context.save()
+                    try await reminderService.schedule(notification: n, for: entity)
+                }
+            }
+        }
     }
 
     @MainActor
@@ -60,7 +100,12 @@ public final class MedicationRepository: MedicationRepositoryProtocol {
         entity: MedicationEntity,
         name: String,
         dosage: String,
-        frequency: MedicationFrequency
+        frequency: MedicationFrequency,
+        remindersEnabled: Bool,
+        reminderTime1: Date?,
+        reminderTime2: Date?,
+        reminderWeekday: Int?,
+        reminderWeekdayTime: Date?
     ) async throws {
 
         let dto = try await service.update(
@@ -77,6 +122,47 @@ public final class MedicationRepository: MedicationRepositoryProtocol {
         entity.updatedAt = dto.updatedAt
 
         try context.save()
+
+        let id = entity.id
+        // remove existing notifications for this medication
+        let notifDesc = FetchDescriptor<NotificationEntity>(predicate: #Predicate { $0.medicationId == id })
+        let existingNotifs = (try? context.fetch(notifDesc)) ?? []
+        for n in existingNotifs {
+            await reminderService.cancel(notification: n)
+            context.delete(n)
+        }
+
+        try context.save()
+
+        // create new notifications if enabled
+        if remindersEnabled {
+            if frequency == .daily {
+                let notif = NotificationEntity(id: UUID(), medicationId: entity.id, frequency: frequency, notificationTime: reminderTime1, weekday: nil, createdAt: Date(), updatedAt: Date())
+                context.insert(notif)
+                try context.save()
+                try await reminderService.schedule(notification: notif, for: entity)
+            } else if frequency == .twiceDaily {
+                if let t1 = reminderTime1 {
+                    let n1 = NotificationEntity(id: UUID(), medicationId: entity.id, frequency: frequency, notificationTime: t1, weekday: nil, createdAt: Date(), updatedAt: Date())
+                    context.insert(n1)
+                    try context.save()
+                    try await reminderService.schedule(notification: n1, for: entity)
+                }
+                if let t2 = reminderTime2 {
+                    let n2 = NotificationEntity(id: UUID(), medicationId: entity.id, frequency: frequency, notificationTime: t2, weekday: nil, createdAt: Date(), updatedAt: Date())
+                    context.insert(n2)
+                    try context.save()
+                    try await reminderService.schedule(notification: n2, for: entity)
+                }
+            } else if frequency == .weekly {
+                if let wd = reminderWeekday, let time = reminderWeekdayTime {
+                    let n = NotificationEntity(id: UUID(), medicationId: entity.id, frequency: frequency, notificationTime: time, weekday: wd, createdAt: Date(), updatedAt: Date())
+                    context.insert(n)
+                    try context.save()
+                    try await reminderService.schedule(notification: n, for: entity)
+                }
+            }
+        }
     }
 
     @MainActor
@@ -85,6 +171,15 @@ public final class MedicationRepository: MedicationRepositoryProtocol {
             username: entity.username,
             id: entity.id
         )
+
+        let id = entity.id
+        // cancel and remove notification entities
+        let notifDesc = FetchDescriptor<NotificationEntity>(predicate: #Predicate { $0.medicationId == id })
+        let existingNotifs = (try? context.fetch(notifDesc)) ?? []
+        for n in existingNotifs {
+            await reminderService.cancel(notification: n)
+            context.delete(n)
+        }
 
         context.delete(entity)
         try context.save()
@@ -111,3 +206,4 @@ public final class MedicationRepository: MedicationRepositoryProtocol {
         }
     }
 }
+

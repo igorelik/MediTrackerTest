@@ -1,0 +1,75 @@
+import Foundation
+import UserNotifications
+
+public protocol ReminderServiceProtocol: AnyObject {
+    func schedule(notification: NotificationEntity, for medication: MedicationEntity) async throws
+    func cancel(notification: NotificationEntity) async
+    func cancelAll(for medication: MedicationEntity) async
+}
+
+public final class ReminderService: ReminderServiceProtocol {
+    private let center: UNUserNotificationCenter
+
+    public init(center: UNUserNotificationCenter = .current()) {
+        self.center = center
+    }
+
+    private func identifier(for notification: NotificationEntity) -> String {
+        "notification-\(notification.id.uuidString)"
+    }
+
+    public func cancel(notification: NotificationEntity) async {
+        await center.removePendingNotificationRequests(withIdentifiers: [identifier(for: notification)])
+    }
+
+    public func cancelAll(for medication: MedicationEntity) async {
+        // No-op here: callers should cancel per-notification by querying NotificationEntity records and calling cancel(notification:)
+    }
+
+    public func schedule(notification: NotificationEntity, for medication: MedicationEntity) async throws {
+        // request authorization if needed
+        let granted = try await center.requestAuthorization(options: [.alert, .sound, .badge])
+        guard granted else { return }
+
+        // build content
+        let content = UNMutableNotificationContent()
+        content.title = medication.name
+        content.body = "Time to take \(medication.name) — \(medication.dosage)"
+
+        var trigger: UNNotificationTrigger?
+
+        switch notification.frequency {
+        case .asNeeded:
+            return
+        case .daily:
+            if let time = notification.notificationTime {
+                let comps = Calendar.current.dateComponents([.hour, .minute], from: time)
+                var dateComps = DateComponents()
+                dateComps.hour = comps.hour
+                dateComps.minute = comps.minute
+                trigger = UNCalendarNotificationTrigger(dateMatching: dateComps, repeats: true)
+            }
+        case .twiceDaily:
+            if let time = notification.notificationTime {
+                let comps = Calendar.current.dateComponents([.hour, .minute], from: time)
+                var dateComps = DateComponents()
+                dateComps.hour = comps.hour
+                dateComps.minute = comps.minute
+                trigger = UNCalendarNotificationTrigger(dateMatching: dateComps, repeats: true)
+            }
+        case .weekly:
+            if let weekday = notification.weekday, let time = notification.notificationTime {
+                let timeComps = Calendar.current.dateComponents([.hour, .minute], from: time)
+                var comps = DateComponents()
+                comps.weekday = weekday
+                comps.hour = timeComps.hour
+                comps.minute = timeComps.minute
+                trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: true)
+            }
+        }
+
+        guard let trig = trigger else { return }
+        let req = UNNotificationRequest(identifier: identifier(for: notification), content: content, trigger: trig)
+        try await center.add(req)
+    }
+}
