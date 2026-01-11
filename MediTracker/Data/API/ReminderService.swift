@@ -31,8 +31,6 @@ public final class ReminderService: ReminderServiceProtocol {
         var trigger: UNNotificationTrigger?
 
         switch notification.frequency {
-        case .asNeeded:
-            return
         case .daily:
             if let time = notification.notificationTime {
                 let comps = Calendar.current.dateComponents([.hour, .minute], from: time)
@@ -57,6 +55,17 @@ public final class ReminderService: ReminderServiceProtocol {
                 comps.hour = timeComps.hour
                 comps.minute = timeComps.minute
                 trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: true)
+            }
+        case .asNeeded:
+            if let time = notification.notificationTime {
+                let timeComps = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: time)
+                var comps = DateComponents()
+                comps.year = timeComps.year
+                comps.month = timeComps.month
+                comps.day = timeComps.day
+                comps.hour = timeComps.hour
+                comps.minute = timeComps.minute
+                trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)
             }
         }
 

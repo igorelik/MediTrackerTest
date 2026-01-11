@@ -44,7 +44,8 @@ final class MedicationRepositoryPreview: MedicationRepositoryProtocol {
         reminderTime1: Date?,
         reminderTime2: Date?,
         reminderWeekday: Int?,
-        reminderWeekdayTime: Date?
+        reminderWeekdayTime: Date?,
+        reminderAsNeededDate: Date?
     ) async throws {
         let now = Date()
         let entity = MedicationEntity(
@@ -61,7 +62,8 @@ final class MedicationRepositoryPreview: MedicationRepositoryProtocol {
     }
 
     @MainActor
-    func update(entity: MedicationEntity, name: String, dosage: String, frequency: MedicationFrequency, remindersEnabled: Bool, reminderTime1: Date?, reminderTime2: Date?, reminderWeekday: Int?, reminderWeekdayTime: Date?) async throws {
+    func update(entity: MedicationEntity, name: String, dosage: String, frequency: MedicationFrequency, remindersEnabled: Bool, reminderTime1: Date?, reminderTime2: Date?, reminderWeekday: Int?, reminderWeekdayTime: Date?,
+                reminderAsNeededDate: Date?) async throws {
         entity.name = name
         entity.dosage = dosage
         entity.frequency = frequency

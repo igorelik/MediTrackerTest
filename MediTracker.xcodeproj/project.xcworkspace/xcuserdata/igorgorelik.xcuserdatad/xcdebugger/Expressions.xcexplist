@@ -3,20 +3,6 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "MedicationRepositoryTests.createAddsEntity():MedicationRepositoryTests.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "meds[0].name">
-            </PersistentString>
-            <PersistentString
-               value = "meds[1].name">
-            </PersistentString>
-            <PersistentString
-               value = "m.name">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "MedicationService.makeRequest(path:method:body:):MedicationService.swift">
          <PersistentStrings>
             <PersistentString
@@ -30,6 +16,31 @@
             </PersistentString>
             <PersistentString
                value = "url">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in MedicationRepository.medications():MedicationRepository.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "n1.frequency">
+            </PersistentString>
+            <PersistentString
+               value = "n1.notificationTime!">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ReminderService.schedule(notification:for:):ReminderService.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MedicationService.create(username:name:dosage:frequency:):MedicationService.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #3 in MedicationEditorView.body.getter:MedicationEditorView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "n1.notificationTime!">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -51,7 +62,18 @@
          contextName = "MedicationService.update(username:id:name:dosage:frequency:):MedicationService.swift">
       </ContextState>
       <ContextState
-         contextName = "MedicationService.create(username:name:dosage:frequency:):MedicationService.swift">
+         contextName = "MedicationRepositoryTests.createAddsEntity():MedicationRepositoryTests.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "meds[0].name">
+            </PersistentString>
+            <PersistentString
+               value = "meds[1].name">
+            </PersistentString>
+            <PersistentString
+               value = "m.name">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
    </ContextStates>
 </VariablesViewState>

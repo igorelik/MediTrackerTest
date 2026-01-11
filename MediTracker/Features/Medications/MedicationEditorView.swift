@@ -1,7 +1,7 @@
 import SwiftUI
+import SwiftData
 
 struct MedicationEditorView: View {
-
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
  
@@ -15,6 +15,7 @@ struct MedicationEditorView: View {
     @State private var reminderTime2: Date = Date()
     @State private var reminderWeekday: Int = Calendar.current.component(.weekday, from: Date())
     @State private var reminderWeekdayTime: Date = Date()
+    @State private var asNeededDate: Date = Date()
 
 
     let viewModel: MedicationViewModel
@@ -39,7 +40,11 @@ struct MedicationEditorView: View {
                 if remindersEnabled {
                     switch frequency {
                     case .asNeeded:
-                        Text("No automatic reminders for as-needed medications.")
+                        VStack(alignment: .leading) {
+                            DatePicker("Select date", selection: $asNeededDate, displayedComponents: .date)
+                                .datePickerStyle(.graphical)
+                            DatePicker("Time", selection: $asNeededDate, displayedComponents: .hourAndMinute)
+                        }
                     case .daily:
                         DatePicker("Time", selection: $reminderTime1, displayedComponents: .hourAndMinute)
                     case .twiceDaily:
@@ -86,14 +91,14 @@ struct MedicationEditorView: View {
                         reminderWeekdayTime = n1.notificationTime ?? Date()
                         reminderWeekday = n1.weekday ?? Calendar.current.component(.weekday, from: Date())
                     case .asNeeded:
-                        1 == 1
+                        asNeededDate = n1.notificationTime ?? Date()
                     }
                 }
                 else {
                     remindersEnabled = false
                 }
                 if let n2 = existing.notification1 {
-                    reminderTime1 = n2.notificationTime ?? Date()
+                    reminderTime2 = n2.notificationTime ?? Date()
                 }
             }
         }
@@ -113,7 +118,8 @@ struct MedicationEditorView: View {
                 reminderTime1: remindersEnabled ? reminderTime1 : nil,
                 reminderTime2: remindersEnabled ? reminderTime2 : nil,
                 reminderWeekday: remindersEnabled ? reminderWeekday : nil,
-                reminderWeekdayTime: remindersEnabled ? reminderWeekdayTime : nil
+                reminderWeekdayTime: remindersEnabled ? reminderWeekdayTime : nil,
+                reminderAsNeededDate: remindersEnabled ? asNeededDate : nil
             )
         } else {
             await viewModel.create(
@@ -124,7 +130,8 @@ struct MedicationEditorView: View {
                 reminderTime1: remindersEnabled ? reminderTime1 : nil,
                 reminderTime2: remindersEnabled ? reminderTime2 : nil,
                 reminderWeekday: remindersEnabled ? reminderWeekday : nil,
-                reminderWeekdayTime: remindersEnabled ? reminderWeekdayTime : nil
+                reminderWeekdayTime: remindersEnabled ? reminderWeekdayTime : nil,
+                reminderAsNeededDate: remindersEnabled ? asNeededDate : nil
             )
         }
         if let vmError = viewModel.errorMessage,!vmError.isEmpty {

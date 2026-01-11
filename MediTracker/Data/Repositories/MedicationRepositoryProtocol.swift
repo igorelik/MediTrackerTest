@@ -10,7 +10,8 @@ public protocol MedicationRepositoryProtocol: AnyObject {
         reminderTime1: Date?,
         reminderTime2: Date?,
         reminderWeekday: Int?,
-        reminderWeekdayTime: Date?
+        reminderWeekdayTime: Date?,
+        reminderAsNeededDate: Date?
     ) async throws
 
     func update(
@@ -22,7 +23,8 @@ public protocol MedicationRepositoryProtocol: AnyObject {
         reminderTime1: Date?,
         reminderTime2: Date?,
         reminderWeekday: Int?,
-        reminderWeekdayTime: Date?
+        reminderWeekdayTime: Date?,
+        reminderAsNeededDate: Date?
     ) async throws
     func delete(entity: MedicationEntity) async throws
 }
