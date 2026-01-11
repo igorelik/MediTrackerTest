@@ -10,8 +10,8 @@ public final class MedicationRepository: MedicationRepositoryProtocol {
  
     public init(service: MedicationServiceProtocol,
                 authService: AuthenticationServiceProtocol,
-                context: ModelContext,
-                reminderService: ReminderServiceProtocol = ReminderService()) {
+                reminderService: ReminderServiceProtocol,
+                context: ModelContext) {
         self.service = service
         self.context = context
         self.authService = authService
@@ -22,7 +22,19 @@ public final class MedicationRepository: MedicationRepositoryProtocol {
         let descriptor = FetchDescriptor<MedicationEntity>(
             sortBy: [SortDescriptor(\.createdAt, order: .reverse)]
         )
-        return (try? context.fetch(descriptor)) ?? []
+        let meds = (try? context.fetch(descriptor)) ?? []
+        meds.forEach { medication in
+            let medicationId = medication.id
+            let notifDesc = FetchDescriptor<NotificationEntity>(predicate: #Predicate { $0.medicationId == medicationId })
+            let notifications = (try? context.fetch(notifDesc)) ?? []
+            if let n1 = notifications.first {
+                medication.notification1 = n1
+            }
+            if notifications.count > 1, let n2 = notifications.last {
+                medication.notification2 = n2
+            }
+        }
+        return meds
     }
 
     public func refresh() async throws {
@@ -33,8 +45,10 @@ public final class MedicationRepository: MedicationRepositoryProtocol {
             upsert(item.toEntity())
         }
 
-        // remove local items deleted from the remote
+        // if medication was removed from the backend, remove local items deleted from the remote and cancel notifications
         for item in medications() where !remote.contains(where: { $0.id == item.id }) {
+            let medicationid = item.id
+            await cancelMedicationNotificationsByMedicationId(medicationid)
             context.delete(item)
         }
 
@@ -95,6 +109,16 @@ public final class MedicationRepository: MedicationRepositoryProtocol {
         }
     }
 
+    fileprivate func cancelMedicationNotificationsByMedicationId(_ id: UUID) async {
+        // remove existing notifications for this medication
+        let notifDesc = FetchDescriptor<NotificationEntity>(predicate: #Predicate { $0.medicationId == id })
+        let existingNotifs = (try? context.fetch(notifDesc)) ?? []
+        for n in existingNotifs {
+            await reminderService.cancel(notification: n)
+            context.delete(n)
+        }
+    }
+    
     @MainActor
     public func update(
         entity: MedicationEntity,
@@ -124,13 +148,7 @@ public final class MedicationRepository: MedicationRepositoryProtocol {
         try context.save()
 
         let id = entity.id
-        // remove existing notifications for this medication
-        let notifDesc = FetchDescriptor<NotificationEntity>(predicate: #Predicate { $0.medicationId == id })
-        let existingNotifs = (try? context.fetch(notifDesc)) ?? []
-        for n in existingNotifs {
-            await reminderService.cancel(notification: n)
-            context.delete(n)
-        }
+        await cancelMedicationNotificationsByMedicationId(id)
 
         try context.save()
 

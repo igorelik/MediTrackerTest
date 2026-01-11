@@ -11,6 +11,8 @@ public final class MedicationEntity {
     var frequencyRaw: String
     var createdAt: Date
     var updatedAt: Date
+    var notification1: NotificationEntity?
+    var notification2: NotificationEntity?
 
     init(
         id: UUID,

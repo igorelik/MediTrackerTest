@@ -19,8 +19,7 @@ struct MedicationEditorView: View {
 
     let viewModel: MedicationViewModel
     let existing: MedicationEntity?
-    private let username = "test-user"
-
+    
     var body: some View {
         Form {
             Section("Details") {
@@ -76,6 +75,26 @@ struct MedicationEditorView: View {
                 name = existing.name
                 dosage = existing.dosage
                 frequency = existing.frequency
+                if let n1 = existing.notification1{
+                    remindersEnabled = true
+                    switch frequency {
+                    case .daily:
+                        reminderTime1 = n1.notificationTime ?? Date()
+                    case .twiceDaily:
+                        reminderTime1 = n1.notificationTime ?? Date()
+                    case .weekly:
+                        reminderWeekdayTime = n1.notificationTime ?? Date()
+                        reminderWeekday = n1.weekday ?? Calendar.current.component(.weekday, from: Date())
+                    case .asNeeded:
+                        1 == 1
+                    }
+                }
+                else {
+                    remindersEnabled = false
+                }
+                if let n2 = existing.notification1 {
+                    reminderTime1 = n2.notificationTime ?? Date()
+                }
             }
         }
     }

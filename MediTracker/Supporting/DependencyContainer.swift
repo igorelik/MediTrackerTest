@@ -18,7 +18,8 @@ public final class Resolver {
         let configService = ConfigurationService()
         let medicationService = MedicationService(configuration: configService)
         let authService = makeAuthenticationService()
-        return MedicationRepository(service: medicationService, authService: authService, context: context)
+        let reminderService = ReminderService()
+        return MedicationRepository(service: medicationService, authService: authService, reminderService: reminderService, context: context)
     }
     
     public func makeAuthenticationService() -> AuthenticationServiceProtocol {

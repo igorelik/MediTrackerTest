@@ -1,12 +1,6 @@
 import Foundation
 import UserNotifications
 
-public protocol ReminderServiceProtocol: AnyObject {
-    func schedule(notification: NotificationEntity, for medication: MedicationEntity) async throws
-    func cancel(notification: NotificationEntity) async
-    func cancelAll(for medication: MedicationEntity) async
-}
-
 public final class ReminderService: ReminderServiceProtocol {
     private let center: UNUserNotificationCenter
 
@@ -18,14 +12,12 @@ public final class ReminderService: ReminderServiceProtocol {
         "notification-\(notification.id.uuidString)"
     }
 
+    @MainActor
     public func cancel(notification: NotificationEntity) async {
-        await center.removePendingNotificationRequests(withIdentifiers: [identifier(for: notification)])
+        center.removePendingNotificationRequests(withIdentifiers: [identifier(for: notification)])
     }
 
-    public func cancelAll(for medication: MedicationEntity) async {
-        // No-op here: callers should cancel per-notification by querying NotificationEntity records and calling cancel(notification:)
-    }
-
+    @MainActor
     public func schedule(notification: NotificationEntity, for medication: MedicationEntity) async throws {
         // request authorization if needed
         let granted = try await center.requestAuthorization(options: [.alert, .sound, .badge])
