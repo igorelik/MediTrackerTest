@@ -18,14 +18,14 @@ final class MockRepository: MedicationRepositoryProtocol {
         if shouldThrowOnRefresh { throw NSError(domain: "mock", code: 1) }
     }
   
-    func create(name: String, dosage: String, frequency: MediTracker.MedicationFrequency, remindersEnabled: Bool, reminderTime1: Date?, reminderTime2: Date?, reminderWeekday: Int?, reminderWeekdayTime: Date?) async throws {
+    func create(name: String, dosage: String, frequency: MediTracker.MedicationFrequency, remindersEnabled: Bool, reminderTime1: Date?, reminderTime2: Date?, reminderWeekday: Int?, reminderWeekdayTime: Date?, reminderAsNeededDate: Date?) async throws {
         didCallCreate = (name, dosage, frequency)
         let e = MedicationEntity(id: UUID(), username: "u", name: name, dosage: dosage, frequency: frequency, createdAt: Date(), updatedAt: Date())
         meds.append(e)
     }
 
     @MainActor
-    func update(entity: MediTracker.MedicationEntity, name: String, dosage: String, frequency: MediTracker.MedicationFrequency, remindersEnabled: Bool, reminderTime1: Date?, reminderTime2: Date?, reminderWeekday: Int?, reminderWeekdayTime: Date?) async throws {
+    func update(entity: MediTracker.MedicationEntity, name: String, dosage: String, frequency: MediTracker.MedicationFrequency, remindersEnabled: Bool, reminderTime1: Date?, reminderTime2: Date?, reminderWeekday: Int?, reminderWeekdayTime: Date?, reminderAsNeededDate: Date?) async throws {
         didCallUpdate = (entity, name, dosage, frequency)
         if let idx = meds.firstIndex(where: { $0.id == entity.id }) {
             meds[idx].name = name
